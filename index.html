@@ -1,0 +1,1524 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>CryptoPulse — Cryptocurrency Market Tracker</title>
+
+  <meta
+    name="description"
+    content="CryptoPulse is a modern cryptocurrency market tracker for prices, market capitalization, volume and crypto market trends."
+  />
+
+  <meta name="theme-color" content="#07111f" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #050b14;
+      --bg2: #081321;
+      --card: rgba(13, 25, 42, 0.82);
+      --card-hover: rgba(18, 34, 56, 0.95);
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #f4f7fb;
+      --muted: #8ea0b8;
+      --primary: #00e5ff;
+      --primary2: #6366f1;
+      --green: #20e58a;
+      --red: #ff5572;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    }
+
+    body {
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(0, 229, 255, 0.12), transparent 30%),
+        radial-gradient(circle at 90% 10%, rgba(99, 102, 241, 0.14), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    /* ================= NAVBAR ================= */
+
+    .navbar {
+      width: 100%;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(18px);
+      background: rgba(5, 11, 20, 0.78);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-container {
+      max-width: 1250px;
+      margin: auto;
+      padding: 16px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      color: white;
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.25);
+    }
+
+    .logo span {
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-size: 14px;
+      transition: 0.25s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-btn {
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      background: rgba(0, 229, 255, 0.08);
+      color: var(--primary);
+      padding: 9px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    .nav-btn:hover {
+      background: rgba(0, 229, 255, 0.15);
+    }
+
+    /* ================= HERO ================= */
+
+    .hero {
+      max-width: 1250px;
+      margin: auto;
+      padding: 80px 22px 45px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: center;
+      gap: 50px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 13px;
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      background: rgba(0, 229, 255, 0.07);
+      border-radius: 999px;
+      color: var(--primary);
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--green);
+    }
+
+    .hero h1 {
+      font-size: clamp(44px, 6vw, 76px);
+      line-height: 0.98;
+      letter-spacing: -4px;
+      max-width: 760px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(
+        90deg,
+        #ffffff,
+        var(--primary),
+        #8b7cff
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 17px;
+      max-width: 650px;
+      margin: 25px 0;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      padding: 13px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      border: none;
+      font-weight: 700;
+      transition: 0.25s;
+    }
+
+    .primary-btn {
+      color: #001018;
+      background: linear-gradient(135deg, var(--primary), #67f3ff);
+      box-shadow: 0 10px 35px rgba(0, 229, 255, 0.18);
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .secondary-btn {
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+      border: 1px solid var(--border);
+    }
+
+    .secondary-btn:hover {
+      background: rgba(255, 255, 255, 0.09);
+    }
+
+    /* ================= HERO CARD ================= */
+
+    .hero-card {
+      position: relative;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(0, 229, 255, 0.1),
+          rgba(99, 102, 241, 0.08)
+        ),
+        var(--card);
+      border: 1px solid var(--border);
+      border-radius: 25px;
+      padding: 26px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: var(--primary);
+      filter: blur(100px);
+      opacity: 0.12;
+      right: -70px;
+      top: -70px;
+    }
+
+    .coin-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 25px;
+    }
+
+    .coin-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .coin-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #f7931a;
+      font-weight: 900;
+      font-size: 21px;
+    }
+
+    .coin-name strong {
+      display: block;
+      font-size: 17px;
+    }
+
+    .coin-name small {
+      color: var(--muted);
+    }
+
+    .live {
+      color: var(--green);
+      font-size: 12px;
+    }
+
+    .big-price {
+      font-size: 42px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .positive {
+      color: var(--green);
+    }
+
+    .negative {
+      color: var(--red);
+    }
+
+    .mini-chart {
+      height: 120px;
+      margin: 20px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chart-line {
+      position: absolute;
+      width: 120%;
+      height: 100%;
+      left: -10%;
+    }
+
+    .chart-line svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .chart-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .stat-box {
+      padding: 13px;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+    }
+
+    .stat-box span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 5px;
+    }
+
+    .stat-box strong {
+      font-size: 13px;
+    }
+
+    /* ================= MARKET STATS ================= */
+
+    .section {
+      max-width: 1250px;
+      margin: auto;
+      padding: 35px 22px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .section-header h2 {
+      font-size: 26px;
+    }
+
+    .section-header p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 5px;
+    }
+
+    .market-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+
+    .market-card {
+      padding: 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      transition: 0.25s;
+    }
+
+    .market-card:hover {
+      transform: translateY(-3px);
+      background: var(--card-hover);
+    }
+
+    .market-card span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .market-card strong {
+      display: block;
+      margin-top: 10px;
+      font-size: 23px;
+    }
+
+    /* ================= SEARCH ================= */
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 7px;
+      border-radius: 13px;
+      width: 300px;
+    }
+
+    .search-box input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: white;
+      padding: 8px;
+    }
+
+    .search-box input::placeholder {
+      color: #65758c;
+    }
+
+    /* ================= TABLE ================= */
+
+    .table-container {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--card);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
+    }
+
+    th {
+      text-align: left;
+      padding: 17px 18px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 17px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 14px;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover {
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .rank {
+      color: var(--muted);
+      width: 45px;
+    }
+
+    .table-coin {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-width: 170px;
+    }
+
+    .table-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+    }
+
+    .table-coin strong {
+      display: block;
+    }
+
+    .table-coin small {
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .star {
+      cursor: pointer;
+      color: #66758b;
+      margin-right: 8px;
+    }
+
+    .star.active {
+      color: #ffd84d;
+    }
+
+    /* ================= FEATURES ================= */
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 17px;
+    }
+
+    .feature {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 25px;
+    }
+
+    .feature-icon {
+      font-size: 28px;
+      margin-bottom: 15px;
+    }
+
+    .feature h3 {
+      margin-bottom: 8px;
+    }
+
+    .feature p {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    /* ================= CTA ================= */
+
+    .cta {
+      max-width: 1250px;
+      margin: 40px auto;
+      padding: 55px 30px;
+      text-align: center;
+      border-radius: 25px;
+      border: 1px solid var(--border);
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(0, 229, 255, 0.12),
+          transparent 55%
+        ),
+        var(--card);
+    }
+
+    .cta h2 {
+      font-size: clamp(30px, 5vw, 48px);
+      margin-bottom: 12px;
+    }
+
+    .cta p {
+      color: var(--muted);
+      max-width: 600px;
+      margin: auto auto 22px;
+      line-height: 1.6;
+    }
+
+    /* ================= FOOTER ================= */
+
+    footer {
+      margin-top: 70px;
+      border-top: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.18);
+    }
+
+    .footer-container {
+      max-width: 1250px;
+      margin: auto;
+      padding: 30px 22px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: center;
+    }
+
+    footer p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* ================= LOADING ================= */
+
+    .loading {
+      text-align: center;
+      padding: 30px;
+      color: var(--muted);
+    }
+
+    /* ================= MOBILE ================= */
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 55px;
+      }
+
+      .market-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 {
+        letter-spacing: -2px;
+      }
+
+      .market-stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .chart-stats {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+
+      .section-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .search-box {
+        width: 100%;
+      }
+
+      .footer-container {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ================= NAVBAR ================= -->
+
+  <nav class="navbar">
+    <div class="nav-container">
+
+      <a href="#" class="logo">
+        <div class="logo-icon">₿</div>
+        Crypto<span>Pulse</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="#market">Market</a>
+        <a href="#features">Features</a>
+        <a href="#about">About</a>
+        <a href="https://github.com/imaginationai31-sys/cryptopulse" target="_blank">
+          GitHub
+        </a>
+      </div>
+
+      <button class="nav-btn" onclick="scrollToMarket()">
+        Explore Market →
+      </button>
+
+    </div>
+  </nav>
+
+
+  <!-- ================= HERO ================= -->
+
+  <main>
+
+    <section class="hero">
+
+      <div>
+
+        <div class="badge">
+          <span class="pulse-dot"></span>
+          Crypto Market Intelligence
+        </div>
+
+        <h1>
+          Track the
+          <span class="gradient-text">Crypto Pulse.</span>
+        </h1>
+
+        <p>
+          Monitor cryptocurrency prices, market capitalization, trading
+          volume and market trends through a clean, fast and responsive
+          crypto dashboard.
+        </p>
+
+        <div class="hero-actions">
+          <button class="primary-btn" onclick="scrollToMarket()">
+            Explore Market
+          </button>
+
+          <a
+            class="secondary-btn"
+            href="https://github.com/imaginationai31-sys/cryptopulse"
+            target="_blank"
+          >
+            View on GitHub
+          </a>
+        </div>
+
+      </div>
+
+
+      <!-- BTC CARD -->
+
+      <div class="hero-card">
+
+        <div class="coin-head">
+
+          <div class="coin-info">
+
+            <div class="coin-icon">
+              ₿
+            </div>
+
+            <div class="coin-name">
+              <strong>Bitcoin</strong>
+              <small>BTC</small>
+            </div>
+
+          </div>
+
+          <div class="live">
+            ● LIVE
+          </div>
+
+        </div>
+
+        <div class="big-price" id="btcPrice">
+          Loading...
+        </div>
+
+        <div id="btcChange" class="positive">
+          Updating market data...
+        </div>
+
+        <div class="mini-chart">
+
+          <div class="chart-line">
+
+            <svg
+              viewBox="0 0 500 130"
+              preserveAspectRatio="none"
+            >
+              <defs>
+                <linearGradient
+                  id="chartGradient"
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
+                >
+                  <stop
+                    offset="0%"
+                    stop-opacity="0.35"
+                  />
+                  <stop
+                    offset="100%"
+                    stop-opacity="0"
+                  />
+                </linearGradient>
+              </defs>
+
+              <path
+                d="M0,100 C40,90 55,105 90,75
+                   C125,45 130,75 165,65
+                   C205,55 200,90 240,65
+                   C280,40 290,65 320,35
+                   C355,8 370,45 395,30
+                   C430,10 450,35 500,5"
+                fill="none"
+                stroke="#00e5ff"
+                stroke-width="4"
+              />
+
+              <path
+                d="M0,100 C40,90 55,105 90,75
+                   C125,45 130,75 165,65
+                   C205,55 200,90 240,65
+                   C280,40 290,65 320,35
+                   C355,8 370,45 395,30
+                   C430,10 450,35 500,5
+                   L500,130 L0,130 Z"
+                fill="url(#chartGradient)"
+              />
+
+            </svg>
+
+          </div>
+
+        </div>
+
+        <div class="chart-stats">
+
+          <div class="stat-box">
+            <span>24H HIGH</span>
+            <strong id="btcHigh">—</strong>
+          </div>
+
+          <div class="stat-box">
+            <span>24H LOW</span>
+            <strong id="btcLow">—</strong>
+          </div>
+
+          <div class="stat-box">
+            <span>MARKET CAP</span>
+            <strong id="btcCap">—</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= MARKET OVERVIEW ================= -->
+
+    <section class="section">
+
+      <div class="section-header">
+
+        <div>
+          <h2>Market Overview</h2>
+          <p>Quick snapshot of the global crypto market.</p>
+        </div>
+
+      </div>
+
+      <div class="market-stats">
+
+        <div class="market-card">
+          <span>Global Market Cap</span>
+          <strong id="globalCap">Loading...</strong>
+        </div>
+
+        <div class="market-card">
+          <span>24H Volume</span>
+          <strong id="globalVolume">Loading...</strong>
+        </div>
+
+        <div class="market-card">
+          <span>BTC Dominance</span>
+          <strong id="btcDominance">Loading...</strong>
+        </div>
+
+        <div class="market-card">
+          <span>Active Cryptocurrencies</span>
+          <strong id="activeCoins">Loading...</strong>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= MARKET ================= -->
+
+    <section class="section" id="market">
+
+      <div class="section-header">
+
+        <div>
+          <h2>Top Cryptocurrencies</h2>
+          <p>Explore the latest cryptocurrency market data.</p>
+        </div>
+
+        <div class="search-box">
+
+          <span>🔎</span>
+
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search cryptocurrency..."
+            oninput="filterCoins()"
+          />
+
+        </div>
+
+      </div>
+
+
+      <div class="table-container">
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>#</th>
+              <th>Asset</th>
+              <th>Price</th>
+              <th>24H</th>
+              <th>Market Cap</th>
+              <th>24H Volume</th>
+            </tr>
+
+          </thead>
+
+          <tbody id="coinTable">
+
+            <tr>
+              <td colspan="6" class="loading">
+                Loading cryptocurrency data...
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= FEATURES ================= -->
+
+    <section class="section" id="features">
+
+      <div class="section-header">
+
+        <div>
+          <h2>Built for Crypto Explorers</h2>
+          <p>
+            Everything you need for a simple cryptocurrency market
+            experience.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="features">
+
+        <div class="feature">
+
+          <div class="feature-icon">📊</div>
+
+          <h3>Market Tracking</h3>
+
+          <p>
+            Monitor cryptocurrency prices, market capitalization,
+            volume and daily price changes in one place.
+          </p>
+
+        </div>
+
+
+        <div class="feature">
+
+          <div class="feature-icon">⚡</div>
+
+          <h3>Fast Dashboard</h3>
+
+          <p>
+            Designed with a lightweight interface so you can quickly
+            find the market information you need.
+          </p>
+
+        </div>
+
+
+        <div class="feature">
+
+          <div class="feature-icon">📱</div>
+
+          <h3>Responsive Design</h3>
+
+          <p>
+            Access CryptoPulse comfortably from desktop, tablet or
+            mobile devices.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= CTA ================= -->
+
+    <section class="cta" id="about">
+
+      <h2>Stay Ahead of the Market.</h2>
+
+      <p>
+        CryptoPulse gives you a clean overview of the cryptocurrency
+        market so you can explore market movements faster.
+      </p>
+
+      <button
+        class="primary-btn"
+        onclick="scrollToMarket()"
+      >
+        Start Exploring →
+      </button>
+
+    </section>
+
+  </main>
+
+
+  <!-- ================= FOOTER ================= -->
+
+  <footer>
+
+    <div class="footer-container">
+
+      <div>
+        <a href="#" class="logo">
+          <div class="logo-icon">₿</div>
+          Crypto<span>Pulse</span>
+        </a>
+
+        <p style="margin-top:10px;">
+          Track the Market. Understand the Pulse.
+        </p>
+      </div>
+
+      <div class="footer-links">
+
+        <a
+          href="https://github.com/imaginationai31-sys/cryptopulse"
+          target="_blank"
+        >
+          GitHub
+        </a>
+
+        <a href="#market">
+          Market
+        </a>
+
+        <a href="#features">
+          Features
+        </a>
+
+      </div>
+
+    </div>
+
+    <div style="text-align:center;padding:15px;border-top:1px solid rgba(255,255,255,.05);">
+
+      <p>
+        © <span id="year"></span> CryptoPulse. For educational and
+        informational purposes only.
+      </p>
+
+    </div>
+
+  </footer>
+
+
+  <!-- ================= JAVASCRIPT ================= -->
+
+  <script>
+
+    const API_BASE =
+      "https://api.coingecko.com/api/v3";
+
+
+    let coins = [];
+
+
+    /* ================= FORMATTERS ================= */
+
+    function formatCurrency(value) {
+
+      if (value === null || value === undefined) {
+        return "—";
+      }
+
+      if (value >= 1000000000000) {
+        return "$" + (value / 1000000000000).toFixed(2) + "T";
+      }
+
+      if (value >= 1000000000) {
+        return "$" + (value / 1000000000).toFixed(2) + "B";
+      }
+
+      if (value >= 1000000) {
+        return "$" + (value / 1000000).toFixed(2) + "M";
+      }
+
+      return "$" + Number(value).toLocaleString(
+        "en-US",
+        {
+          maximumFractionDigits: 2
+        }
+      );
+    }
+
+
+    function formatPrice(value) {
+
+      if (value === null || value === undefined) {
+        return "—";
+      }
+
+      if (value < 1) {
+        return "$" + Number(value).toFixed(6);
+      }
+
+      return "$" + Number(value).toLocaleString(
+        "en-US",
+        {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        }
+      );
+    }
+
+
+    function formatNumber(value) {
+
+      if (!value) {
+        return "—";
+      }
+
+      return Number(value).toLocaleString("en-US");
+    }
+
+
+    /* ================= LOAD COINS ================= */
+
+    async function loadCoins() {
+
+      try {
+
+        const url =
+          API_BASE +
+          "/coins/markets?vs_currency=usd" +
+          "&order=market_cap_desc" +
+          "&per_page=50" +
+          "&page=1" +
+          "&sparkline=false" +
+          "&price_change_percentage=24h";
+
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error("API request failed");
+        }
+
+        coins = await response.json();
+
+        renderCoins(coins);
+
+        updateBitcoin();
+
+        loadGlobalData();
+
+      } catch (error) {
+
+        console.error(error);
+
+        document.getElementById("coinTable").innerHTML = `
+          <tr>
+            <td colspan="6" class="loading">
+              Unable to load market data. Please try again later.
+            </td>
+          </tr>
+        `;
+
+      }
+
+    }
+
+
+    /* ================= RENDER COINS ================= */
+
+    function renderCoins(data) {
+
+      const table =
+        document.getElementById("coinTable");
+
+      if (!data.length) {
+
+        table.innerHTML = `
+          <tr>
+            <td colspan="6" class="loading">
+              No cryptocurrencies found.
+            </td>
+          </tr>
+        `;
+
+        return;
+
+      }
+
+
+      table.innerHTML = data
+        .slice(0, 50)
+        .map((coin, index) => {
+
+          const change =
+            coin.price_change_percentage_24h || 0;
+
+          const changeClass =
+            change >= 0
+              ? "positive"
+              : "negative";
+
+          const changeSign =
+            change >= 0
+              ? "+"
+              : "";
+
+
+          return `
+
+            <tr>
+
+              <td class="rank">
+                ${index + 1}
+              </td>
+
+              <td>
+
+                <div class="table-coin">
+
+                  <span
+                    class="star"
+                    onclick="toggleStar(this)"
+                  >
+                    ☆
+                  </span>
+
+                  <img
+                    class="table-icon"
+                    src="${coin.image}"
+                    alt="${coin.name}"
+                    loading="lazy"
+                  />
+
+                  <div>
+
+                    <strong>
+                      ${coin.name}
+                    </strong>
+
+                    <small>
+                      ${coin.symbol}
+                    </small>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+              <td>
+                <strong>
+                  ${formatPrice(coin.current_price)}
+                </strong>
+              </td>
+
+              <td class="${changeClass}">
+                ${changeSign}${change.toFixed(2)}%
+              </td>
+
+              <td>
+                ${formatCurrency(coin.market_cap)}
+              </td>
+
+              <td>
+                ${formatCurrency(coin.total_volume)}
+              </td>
+
+            </tr>
+
+          `;
+
+        })
+        .join("");
+
+    }
+
+
+    /* ================= BITCOIN ================= */
+
+    function updateBitcoin() {
+
+      const btc =
+        coins.find(
+          coin => coin.id === "bitcoin"
+        );
+
+      if (!btc) return;
+
+
+      document.getElementById("btcPrice")
+        .textContent =
+        formatPrice(btc.current_price);
+
+
+      const change =
+        btc.price_change_percentage_24h || 0;
+
+
+      const changeElement =
+        document.getElementById("btcChange");
+
+
+      changeElement.textContent =
+        `${change >= 0 ? "+" : ""}${change.toFixed(2)}% today`;
+
+
+      changeElement.className =
+        change >= 0
+          ? "positive"
+          : "negative";
+
+
+      document.getElementById("btcHigh")
+        .textContent =
+        formatPrice(btc.high_24h);
+
+
+      document.getElementById("btcLow")
+        .textContent =
+        formatPrice(btc.low_24h);
+
+
+      document.getElementById("btcCap")
+        .textContent =
+        formatCurrency(btc.market_cap);
+
+    }
+
+
+    /* ================= GLOBAL DATA ================= */
+
+    async function loadGlobalData() {
+
+      try {
+
+        const response =
+          await fetch(
+            API_BASE + "/global"
+          );
+
+        const result =
+          await response.json();
+
+        const data =
+          result.data;
+
+
+        document.getElementById("globalCap")
+          .textContent =
+          formatCurrency(
+            data.total_market_cap.usd
+          );
+
+
+        document.getElementById("globalVolume")
+          .textContent =
+          formatCurrency(
+            data.total_volume.usd
+          );
+
+
+        document.getElementById("btcDominance")
+          .textContent =
+          data.market_cap_percentage.btc
+            .toFixed(2) + "%";
+
+
+        document.getElementById("activeCoins")
+          .textContent =
+          formatNumber(
+            data.active_cryptocurrencies
+          );
+
+      } catch (error) {
+
+        console.error(error);
+
+        document.getElementById("globalCap")
+          .textContent = "—";
+
+        document.getElementById("globalVolume")
+          .textContent = "—";
+
+        document.getElementById("btcDominance")
+          .textContent = "—";
+
+        document.getElementById("activeCoins")
+          .textContent = "—";
+
+      }
+
+    }
+
+
+    /* ================= SEARCH ================= */
+
+    function filterCoins() {
+
+      const query =
+        document.getElementById(
+          "searchInput"
+        ).value
+        .toLowerCase()
+        .trim();
+
+
+      if (!query) {
+
+        renderCoins(coins);
+
+        return;
+
+      }
+
+
+      const filtered =
+        coins.filter(coin =>
+
+          coin.name
+            .toLowerCase()
+            .includes(query)
+
+          ||
+
+          coin.symbol
+            .toLowerCase()
+            .includes(query)
+
+        );
+
+
+      renderCoins(filtered);
+
+    }
+
+
+    /* ================= FAVORITE ================= */
+
+    function toggleStar(element) {
+
+      element.classList.toggle("active");
+
+      element.textContent =
+        element.classList.contains("active")
+          ? "★"
+          : "☆";
+
+    }
+
+
+    /* ================= SCROLL ================= */
+
+    function scrollToMarket() {
+
+      document
+        .getElementById("market")
+        .scrollIntoView({
+          behavior: "smooth"
+        });
+
+    }
+
+
+    /* ================= YEAR ================= */
+
+    document.getElementById("year")
+      .textContent =
+      new Date().getFullYear();
+
+
+    /* ================= START ================= */
+
+    loadCoins();
+
+
+    /*
+      Refresh market information periodically.
+      CoinGecko may rate-limit frequent requests,
+      so keep the interval reasonably high.
+    */
+
+    setInterval(() => {
+
+      loadCoins();
+
+    }, 120000);
+
+  </script>
+
+</body>
+</html>
+```
